@@ -1,0 +1,12 @@
+module.exports = {
+  preset: "ts-jest",
+  testEnvironment: "node",
+  testMatch: ["**/tests/**/*.test.ts"],
+  collectCoverageFrom: ["src/**/*.ts"],
+  coveragePathIgnorePatterns: ["/node_modules/", "/dist/"],
+  coverageThreshold: {
+    global: {
+      lines: 70,
+    },
+  },
+};

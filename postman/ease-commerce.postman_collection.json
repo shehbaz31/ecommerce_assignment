@@ -1,0 +1,60 @@
+{
+  "info": {
+    "name": "Ease Commerce API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health"
+      }
+    },
+    {
+      "name": "Create Order",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"order_id\": \"ord-001\",\n  \"courier_partner\": \"mockcourier\",\n  \"sender\": {\n    \"name\": \"Alice\",\n    \"phone\": \"1234567890\",\n    \"address\": \"10 Main St\",\n    \"city\": \"Bengaluru\",\n    \"pincode\": \"560001\"\n  },\n  \"recipient\": {\n    \"name\": \"Bob\",\n    \"phone\": \"0987654321\",\n    \"address\": \"22 Market Rd\",\n    \"city\": \"Hyderabad\",\n    \"pincode\": \"500001\"\n  },\n  \"parcel\": {\n    \"weight_kg\": 2.5,\n    \"length_cm\": 30,\n    \"width_cm\": 20,\n    \"height_cm\": 15,\n    \"description\": \"Books\"\n  }\n}"
+        },
+        "url": "{{baseUrl}}/api/v1/orders"
+      }
+    },
+    {
+      "name": "Track Order",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/orders/ord-001/track"
+      }
+    },
+    {
+      "name": "Cancel Order",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/orders/ord-001/cancel"
+      }
+    },
+    {
+      "name": "Bulk Orders",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"orders\": [\n    {\n      \"order_id\": \"bulk-1\",\n      \"courier_partner\": \"mockcourier\",\n      \"sender\": {\n        \"name\": \"Alice\",\n        \"phone\": \"1234567890\",\n        \"address\": \"10 Main St\",\n        \"city\": \"Bengaluru\",\n        \"pincode\": \"560001\"\n      },\n      \"recipient\": {\n        \"name\": \"Bob\",\n        \"phone\": \"0987654321\",\n        \"address\": \"22 Market Rd\",\n        \"city\": \"Hyderabad\",\n        \"pincode\": \"500001\"\n      },\n      \"parcel\": {\n        \"weight_kg\": 1.5,\n        \"length_cm\": 20,\n        \"width_cm\": 15,\n        \"height_cm\": 10,\n        \"description\": \"Sample\"\n      }\n    }\n  ]\n}"
+        },
+        "url": "{{baseUrl}}/api/v1/orders/bulk"
+      }
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" }
+  ]
+}
