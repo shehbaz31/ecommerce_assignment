@@ -5,7 +5,10 @@ export const addressSchema = z.object({
   phone: z.string().min(1, 'Phone is required'),
   address: z.string().min(1, 'Address is required'),
   city: z.string().min(1, 'City is required'),
+  state: z.string().min(2, 'State is required'),
   pincode: z.string().min(1, 'Pincode is required'),
+  country: z.string().min(1).default('INDIA'),
+  email: z.string().email().optional().default(''),
 });
 
 export const parcelSchema = z.object({
@@ -14,6 +17,13 @@ export const parcelSchema = z.object({
   width_cm: z.number().positive('Width must be positive'),
   height_cm: z.number().positive('Height must be positive'),
   description: z.string().min(1, 'Description is required'),
+  declared_value: z.number().positive('Declared value must be positive'),
+  invoice_number: z.string().min(1, 'Invoice number is required'),
+  invoice_date: z.string().min(1, 'Invoice date is required'),
+  invoice_value: z.number().positive('Invoice value must be positive'),
+  item_quantity: z.number().int().positive('Item quantity must be positive'),
+  pay_mode: z.enum(['PPD', 'COD', 'RVP', 'RVPQC']).default('PPD'),
+  collectable_value: z.number().min(0).default(0),
 });
 
 export const createOrderSchema = z.object({

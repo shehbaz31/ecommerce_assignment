@@ -17,12 +17,14 @@ export class UrbaneBoltAdapter implements ICourierAdapter {
 
   async createOrder(dto: CreateOrderDto): Promise<CourierOrderResult> {
     try {
-      const response = await this.client.getClient().post('/orders', mapCreateOrderRequest(dto));
+      await this.client.ensureAuthenticated();
+      const response = await this.client.getClient().post('/services/manifest/', mapCreateOrderRequest(dto));
+      const result = Array.isArray(response?.data) ? response.data[0] : response?.data;
       return {
-        courierOrderId: response?.data?.courierOrderId ?? response?.data?.orderId ?? `${dto.order_id}-ub`,
-        awbNumber: response?.data?.awbNumber ?? response?.data?.trackingNumber ?? undefined,
-        status: response?.data?.status ?? 'CREATED',
-        rawResponse: response?.data,
+        courierOrderId: result?.awbNumber ?? result?.orderNumber ?? `${dto.order_id}-ub`,
+        awbNumber: result?.awbNumber ?? undefined,
+        status: result?.status ?? 'CREATED',
+        rawResponse: result,
       };
     } catch (error) {
       throw new AppError('COURIER_API_ERROR', 'Failed to create shipment with UrbaneBolt', 502, [{
@@ -34,7 +36,8 @@ export class UrbaneBoltAdapter implements ICourierAdapter {
 
   async trackShipment(courierOrderId: string): Promise<CourierTrackResult> {
     try {
-      const response = await this.client.getClient().get(`/orders/${courierOrderId}/track`);
+      await this.client.ensureAuthenticated();
+      const response = await this.client.getClient().get(`/services/tracking-pub/`, { params: { awb: courierOrderId } });
       return mapTrackResponse(response?.data ?? {});
     } catch (error) {
       throw new AppError('COURIER_API_ERROR', 'Failed to track shipment with UrbaneBolt', 502);
@@ -43,7 +46,8 @@ export class UrbaneBoltAdapter implements ICourierAdapter {
 
   async cancelOrder(courierOrderId: string): Promise<CourierCancelResult> {
     try {
-      const response = await this.client.getClient().post(`/orders/${courierOrderId}/cancel`);
+      await this.client.ensureAuthenticated();
+      const response = await this.client.getClient().post(`/services/cancel/`, { awbs: courierOrderId });
       return mapCancelResponse(response?.data ?? {});
     } catch (error) {
       throw new AppError('COURIER_API_ERROR', 'Failed to cancel shipment with UrbaneBolt', 502);

@@ -4,3 +4,5 @@ dist/
 coverage/
 .DS_Store
 Supporting Material/
+postman/
+.postman/

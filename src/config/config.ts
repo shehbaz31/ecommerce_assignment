@@ -15,7 +15,9 @@ export const config = {
   databaseUrl: process.env.DATABASE_URL ?? 'postgresql://postgres:postgres@localhost:5432/easecommerce?schema=public',
   urbanebolt: {
     baseUrl: normalizeBaseUrl(process.env.URBANEBOLT_BASE_URL ?? 'https://uat.urbanebolt.example.com/api'),
-    apiKey: process.env.URBANEBOLT_API_KEY ?? 'dev-api-key',
+    username: process.env.URBANEBOLT_USERNAME ?? '',
+    password: process.env.URBANEBOLT_PASSWORD ?? '',
+    customerCode: process.env.URBANEBOLT_CUSTOMER_CODE ?? '',
     timeoutMs: Number(process.env.URBANEBOLT_TIMEOUT_MS ?? '10000'),
     retryCount: Number(process.env.URBANEBOLT_RETRY_COUNT ?? '3'),
     retryDelayMs: Number(process.env.URBANEBOLT_RETRY_DELAY_MS ?? '500'),

@@ -65,16 +65,24 @@ export class UrbaneBoltClient {
   }
 
   async authenticate(): Promise<void> {
-    const response = await this.client.post('/auth', {
-      apiKey: config.urbanebolt.apiKey,
+    const response = await this.client.post('/auth/getToken/', {
+      username: config.urbanebolt.username,
+      password: config.urbanebolt.password,
     });
 
-    const token = response?.data?.token ?? response?.data?.accessToken ?? response?.data?.data?.token;
+
+    const token = response?.data?.access_token ?? response?.data?.token ?? response?.data?.accessToken ?? response?.data?.data?.token;
     if (!token) {
       throw new AppError('AUTH_FAILURE', 'Courier authentication failed', 401);
     }
 
     this.token = token;
+  }
+
+  async ensureAuthenticated(): Promise<void> {
+    if (!this.token) {
+      await this.authenticate();
+    }
   }
 
   getClient() {
